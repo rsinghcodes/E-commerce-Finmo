@@ -7,11 +7,21 @@ import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import Button from '@mui/material/Button';
+// Redux
+import { useDispatch, useSelector } from 'react-redux';
+import { loginUser, authSelector } from '../redux/reducers/authSlice';
 
 // react router
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import { Alert } from '@mui/material';
 
 export default function Login() {
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const [errorMessage, setErrorMessage] = useState('');
+
+  const { isAuthenticated, isError, error } = useSelector(authSelector);
   // Form validation
   const LoginSchema = Yup.object().shape({
     email: Yup.string()
@@ -26,10 +36,22 @@ export default function Login() {
       password: '',
     },
     validationSchema: LoginSchema,
-    onSubmit: () => {},
+    onSubmit: () => {
+      dispatch(loginUser(values));
+    },
   });
 
-  const { errors, touched, handleSubmit, getFieldProps } = formik;
+  const { errors, touched, values, handleSubmit, getFieldProps } = formik;
+
+  useEffect(() => {
+    if (isAuthenticated) {
+      navigate('/');
+    }
+    if (isError) {
+      setErrorMessage(error);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isAuthenticated, isError]);
 
   return (
     <Container component="main" maxWidth="xs">
@@ -46,7 +68,8 @@ export default function Login() {
         </Typography>
         <FormikProvider value={formik}>
           <Form autoComplete="off" noValidate onSubmit={handleSubmit}>
-            <Box sx={{ mt: 1 }}>
+            <Box sx={{ mt: 2 }}>
+              {isError && <Alert severity="error">{errorMessage}</Alert>}
               <TextField
                 margin="normal"
                 fullWidth

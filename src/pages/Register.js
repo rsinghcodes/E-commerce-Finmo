@@ -1,7 +1,7 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import * as Yup from 'yup';
 import { useFormik, Form, FormikProvider } from 'formik';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 // material
 import TextField from '@mui/material/TextField';
 import Grid from '@mui/material/Grid';
@@ -12,9 +12,16 @@ import Button from '@mui/material/Button';
 import { IconButton, InputAdornment } from '@mui/material';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
+// Redux
+import { useDispatch, useSelector } from 'react-redux';
+import { registerUser, authSelector } from '../redux/reducers/authSlice';
 
 export default function Register() {
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
   const [showPassword, setShowPassword] = useState(false);
+
+  const { isSuccess } = useSelector(authSelector);
 
   // Form validation
   const RegisterSchema = Yup.object().shape({
@@ -29,13 +36,14 @@ export default function Register() {
     email: Yup.string()
       .email('Email must be a valid email address')
       .required('Email is required'),
-    password: Yup.string()
-      .required('Password is required')
-      .min(8, 'Password must be at least 8 characters long')
-      .matches(/[a-z]+/, 'One lowercase character')
-      .matches(/[A-Z]+/, 'One uppercase character')
-      .matches(/[@$!%*#?&]+/, 'One special character')
-      .matches(/\d+/, 'One number'),
+    // password: Yup.string()
+    //   .required('Password is required')
+    //   .min(8, 'Password must be at least 8 characters long')
+    //   .matches(/[a-z]+/, 'One lowercase character')
+    //   .matches(/[A-Z]+/, 'One uppercase character')
+    //   .matches(/[@$!%*#?&]+/, 'One special character')
+    //   .matches(/\d+/, 'One number'),
+    password: Yup.string().required('Password is required'),
   });
 
   const formik = useFormik({
@@ -44,19 +52,26 @@ export default function Register() {
       lastname: '',
       email: '',
       password: '',
-      address: '',
-      dob: '',
-      company: '',
     },
     validationSchema: RegisterSchema,
-    onSubmit: () => {},
+    onSubmit: () => {
+      dispatch(registerUser(values));
+    },
   });
 
-  const { errors, touched, handleSubmit, getFieldProps } = formik;
+  const { errors, touched, values, handleSubmit, getFieldProps } = formik;
 
   const handleClickShowPassword = () => {
     setShowPassword(!showPassword);
   };
+
+  useEffect(() => {
+    if (isSuccess) {
+      alert('You have successfully registered. Now you can proceed for login.');
+      navigate('/login');
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isSuccess]);
 
   return (
     <Container component="main" maxWidth="xs">
