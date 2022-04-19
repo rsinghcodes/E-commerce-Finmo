@@ -5,18 +5,19 @@ export const loginUser = createAsyncThunk(
   async (userData, thunkAPI) => {
     try {
       const serialisedState = localStorage.getItem('persistantState');
-      if (serialisedState === null)
+      if (serialisedState === null) {
         return thunkAPI.rejectWithValue('No user found, please register');
-
-      const parsedData = JSON.parse(serialisedState);
-
-      if (
-        parsedData.email === userData.email &&
-        parsedData.password === userData.password
-      ) {
-        return parsedData;
       } else {
-        return thunkAPI.rejectWithValue('Invalid Credentials');
+        const parsedData = JSON.parse(serialisedState);
+
+        if (
+          parsedData.email === userData.email &&
+          parsedData.password === userData.password
+        ) {
+          return parsedData;
+        } else {
+          return thunkAPI.rejectWithValue('Invalid Credentials');
+        }
       }
     } catch (error) {
       return thunkAPI.rejectWithValue(error);
@@ -27,9 +28,9 @@ export const loginUser = createAsyncThunk(
 export const registerUser = createAsyncThunk(
   'auth/register',
   async (userData, thunkAPI) => {
-    const serialisedState = JSON.stringify(userData);
-    localStorage.setItem('persistantState', serialisedState);
     try {
+      const serialisedState = JSON.stringify(userData);
+      localStorage.setItem('persistantState', serialisedState);
     } catch (error) {
       return thunkAPI.rejectWithValue(error);
     }
