@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { Box, Button } from '@mui/material';
+import { Box, Button, Typography } from '@mui/material';
 // Redux
 import { useDispatch, useSelector } from 'react-redux';
 import {
@@ -13,7 +13,7 @@ import ProductCard from '../components/ProductCard';
 
 const Home = () => {
   const dispatch = useDispatch();
-  const { products } = useSelector(productSelector);
+  const { products, isLoading } = useSelector(productSelector);
 
   useEffect(() => {
     dispatch(fetchProducts());
@@ -66,9 +66,15 @@ const Home = () => {
         justifyContent="center"
         alignItems="center"
       >
-        {products.map((product) => (
-          <ProductCard key={product.id} product={product} />
-        ))}
+        {isLoading ? (
+          <Typography variant="subtitle1" component="p" sx={{ mb: 1 }}>
+            Please wait, Data Loading...
+          </Typography>
+        ) : (
+          products.map((product) => (
+            <ProductCard key={product.id} product={product} />
+          ))
+        )}
       </Box>
     </>
   );

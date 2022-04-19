@@ -36,14 +36,13 @@ export default function Register() {
     email: Yup.string()
       .email('Email must be a valid email address')
       .required('Email is required'),
-    // password: Yup.string()
-    //   .required('Password is required')
-    //   .min(8, 'Password must be at least 8 characters long')
-    //   .matches(/[a-z]+/, 'One lowercase character')
-    //   .matches(/[A-Z]+/, 'One uppercase character')
-    //   .matches(/[@$!%*#?&]+/, 'One special character')
-    //   .matches(/\d+/, 'One number'),
-    password: Yup.string().required('Password is required'),
+    password: Yup.string()
+      .required('Password is required')
+      .min(8, 'Password must be at least 8 characters long')
+      .matches(/[a-z]+/, 'One lowercase character')
+      .matches(/[A-Z]+/, 'One uppercase character')
+      .matches(/[@$!%*#?&]+/, 'One special character')
+      .matches(/\d+/, 'One number'),
   });
 
   const formik = useFormik({

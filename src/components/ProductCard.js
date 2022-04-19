@@ -8,7 +8,7 @@ import CardMedia from '@mui/material/CardMedia';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import Rating from '@mui/material/Rating';
-import { Box } from '@mui/material';
+import Box from '@mui/material/Box';
 
 const ProductCard = ({ product }) => {
   return (

@@ -72,7 +72,6 @@ export const productSlice = createSlice({
       state.error = payload;
     },
     [fetchProductById.fulfilled]: (state, { payload }) => {
-      console.log(payload);
       state.isLoading = false;
       state.product = payload;
     },

@@ -1,17 +1,17 @@
-import { Suspense } from 'react';
 import { CssBaseline } from '@mui/material';
 import { Routes, Route } from 'react-router-dom';
-import Spinner from './components/Spinner';
 // Pages
 import Home from './pages/Home';
 import Login from './pages/Login';
 import Register from './pages/Register';
+import Product from './pages/Product';
+import Cart from './pages/Cart';
+import Checkout from './pages/Checkout';
 // utils
 import PrivateRoute from './utils/PrivateRoute';
 // Redux
 import { store } from './redux/store';
 import { setCurrentUser } from './redux/reducers/authSlice';
-import ProductDetail from './pages/ProductDetail';
 
 if (localStorage.persistantState) {
   const userData = JSON.parse(localStorage.persistantState);
@@ -21,19 +21,25 @@ if (localStorage.persistantState) {
 
 function App() {
   return (
-    <Suspense fallback={<Spinner />}>
+    <>
       <Routes>
         <Route element={<PrivateRoute />}>
           <Route path="/" element={<Home />} />
         </Route>
         <Route element={<PrivateRoute />}>
-          <Route path="/product/:id" element={<ProductDetail />} />
+          <Route path="/product/:id" element={<Product />} />
+        </Route>
+        <Route element={<PrivateRoute />}>
+          <Route path="/cart" element={<Cart />} />
+        </Route>
+        <Route element={<PrivateRoute />}>
+          <Route path="/checkout" element={<Checkout />} />
         </Route>
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
       </Routes>
       <CssBaseline />
-    </Suspense>
+    </>
   );
 }
 
