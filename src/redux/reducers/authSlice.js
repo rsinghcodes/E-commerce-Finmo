@@ -14,6 +14,7 @@ export const loginUser = createAsyncThunk(
           parsedData.email === userData.email &&
           parsedData.password === userData.password
         ) {
+          localStorage.setItem('authenticated', true);
           return parsedData;
         } else {
           return thunkAPI.rejectWithValue('Invalid Credentials');
@@ -51,7 +52,7 @@ export const authSlice = createSlice({
     logout: (state, action) => {
       state.user = null;
       state.isAuthenticated = false;
-      localStorage.removeItem('persistantState');
+      localStorage.setItem('authenticated', false);
     },
     setCurrentUser: (state, action) => {
       state.user = action.payload;

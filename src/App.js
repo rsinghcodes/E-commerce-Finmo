@@ -14,9 +14,11 @@ import { store } from './redux/store';
 import { setCurrentUser } from './redux/reducers/authSlice';
 
 if (localStorage.persistantState) {
-  const userData = JSON.parse(localStorage.persistantState);
+  if (localStorage.getItem('authenticated')) {
+    const userData = JSON.parse(localStorage.persistantState);
 
-  store.dispatch(setCurrentUser(userData));
+    store.dispatch(setCurrentUser(userData));
+  }
 }
 
 function App() {

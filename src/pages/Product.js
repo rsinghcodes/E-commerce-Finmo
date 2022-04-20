@@ -60,7 +60,7 @@ const Product = () => {
                   gutterBottom
                   variant="body2"
                   component="p"
-                  fontWeight={600}
+                  fontWeight={500}
                 >
                   Product Description
                 </Typography>
