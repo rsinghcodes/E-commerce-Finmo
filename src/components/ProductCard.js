@@ -26,7 +26,7 @@ const ProductCard = ({ product }) => {
         <CardMedia component="img" height="300" image={product.image} />
         <CardContent>
           <Typography gutterBottom variant="h6" component="div">
-            {product.title}
+            {product.title.substring(0, 50) + '...'}
           </Typography>
           <Typography component="legend" variant="body2">
             Ratings

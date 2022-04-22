@@ -14,7 +14,7 @@ import { store } from './redux/store';
 import { setCurrentUser } from './redux/reducers/authSlice';
 
 if (localStorage.persistantState) {
-  if (localStorage.getItem('authenticated')) {
+  if (localStorage.getItem('authenticated') === true) {
     const userData = JSON.parse(localStorage.persistantState);
 
     store.dispatch(setCurrentUser(userData));

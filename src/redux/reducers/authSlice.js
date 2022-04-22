@@ -32,6 +32,7 @@ export const registerUser = createAsyncThunk(
     try {
       const serialisedState = JSON.stringify(userData);
       localStorage.setItem('persistantState', serialisedState);
+      localStorage.setItem('authenticated', false);
     } catch (error) {
       return thunkAPI.rejectWithValue(error);
     }
